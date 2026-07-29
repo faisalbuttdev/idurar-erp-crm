@@ -10,6 +10,11 @@ const Customer = lazy(() => import('@/pages/Customer'));
 const Invoice = lazy(() => import('@/pages/Invoice'));
 const InvoiceCreate = lazy(() => import('@/pages/Invoice/InvoiceCreate'));
 
+const Quote = lazy(() => import('@/modules/QuoteModule/QuoteDataTableModule'));
+const QuoteCreate = lazy(() => import('@/modules/QuoteModule/CreateQuoteModule'));
+const QuoteRead = lazy(() => import('@/modules/QuoteModule/ReadQuoteModule'));
+const QuoteUpdate = lazy(() => import('@/modules/QuoteModule/UpdateQuoteModule'));
+
 const InvoiceRead = lazy(() => import('@/pages/Invoice/InvoiceRead'));
 const InvoiceUpdate = lazy(() => import('@/pages/Invoice/InvoiceUpdate'));
 const InvoiceRecordPayment = lazy(() => import('@/pages/Invoice/InvoiceRecordPayment'));
@@ -106,15 +111,6 @@ let routes = {
       path: '/settings/edit/:settingsKey',
       element: <Settings />,
     },
-    {
-      path: '/payment/mode',
-      element: <PaymentMode />,
-    },
-    {
-      path: '/taxes',
-      element: <Taxes />,
-    },
-
     {
       path: '/profile',
       element: <Profile />,
