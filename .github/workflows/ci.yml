@@ -2,37 +2,40 @@ name: IDURAR CI
 
 on:
   push:
-    branches:
-      - master
-      - main
-
+    branches: [master, main]
   pull_request:
-    branches:
-      - master
-      - main
+    branches: [master, main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.9.0]
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
+          node-version: 20.9.0
 
       - name: Install Backend
         working-directory: backend
         run: npm ci
+
+      - name: Create backend .env
+        working-directory: backend
+        run: |
+          cat > .env <<EOF
+          DATABASE="${{ secrets.DATABASE }}"
+          JWT_SECRET="${{ secrets.JWT_SECRET }}"
+          RESEND_API="${{ secrets.RESEND_API }}"
+          OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
+          NODE_ENV="production"
+          PUBLIC_SERVER_FILE="${{ secrets.PUBLIC_SERVER_FILE }}"
+          EOF
+
+      - name: Setup Database
+        working-directory: backend
+        run: npm run setup
 
       - name: Install Frontend
         working-directory: frontend
